@@ -3,732 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>课题组耗材管理系统 - 登录注册</title>
+  <title>课题组公共耗材管理系统</title>
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
     }
 
     body {
       min-height: 100vh;
+      background-image: url("./back.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       overflow: hidden;
-      color: #1f2d3d;
-      background:
-        radial-gradient(circle at 12% 18%, rgba(68, 170, 255, 0.30), transparent 26%),
-        radial-gradient(circle at 86% 78%, rgba(0, 230, 255, 0.18), transparent 30%),
-        linear-gradient(135deg, #071a33 0%, #0d315c 45%, #edf7ff 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: relative;
     }
 
+    /* 背景轻微压暗，让按钮更突出 */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 42px 42px;
-      pointer-events: none;
+      background: rgba(0, 20, 45, 0.18);
+      z-index: 0;
     }
 
-    .circuit {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.32;
-    }
-
-    .circuit span {
-      position: absolute;
-      display: block;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(120, 220, 255, 0.95), transparent);
-      animation: flow 5s linear infinite;
-    }
-
-    .circuit span:nth-child(1) {
-      width: 36%;
-      top: 18%;
-      left: 8%;
-    }
-
-    .circuit span:nth-child(2) {
-      width: 30%;
-      top: 35%;
-      right: 5%;
-      animation-delay: 1s;
-    }
-
-    .circuit span:nth-child(3) {
-      width: 42%;
-      bottom: 20%;
-      left: 15%;
-      animation-delay: 2s;
-    }
-
-    .circuit span:nth-child(4) {
-      width: 28%;
-      bottom: 38%;
-      right: 12%;
-      animation-delay: 3s;
-    }
-
-    @keyframes flow {
-      0% {
-        transform: translateX(-45px);
-        opacity: 0.2;
-      }
-
-      50% {
-        opacity: 0.9;
-      }
-
-      100% {
-        transform: translateX(65px);
-        opacity: 0.2;
-      }
-    }
-
-    .floating-dot {
-      position: absolute;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: rgba(130, 230, 255, 0.9);
-      box-shadow: 0 0 18px rgba(130, 230, 255, 0.9);
-      animation: float 7s ease-in-out infinite;
-    }
-
-    .dot1 { top: 18%; left: 18%; }
-    .dot2 { top: 30%; right: 18%; animation-delay: 1.3s; }
-    .dot3 { bottom: 22%; left: 24%; animation-delay: 2.2s; }
-    .dot4 { bottom: 34%; right: 28%; animation-delay: 3.1s; }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-        opacity: 0.65;
-      }
-
-      50% {
-        transform: translateY(-18px);
-        opacity: 1;
-      }
-    }
-
-    .container {
-      width: 980px;
-      max-width: 94vw;
-      min-height: 610px;
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      background: rgba(255, 255, 255, 0.88);
-      border-radius: 26px;
-      overflow: hidden;
-      border: 1px solid rgba(160, 220, 255, 0.35);
-      box-shadow:
-        0 28px 70px rgba(0, 30, 80, 0.38),
-        inset 0 0 0 1px rgba(255,255,255,0.35);
-      backdrop-filter: blur(18px);
-      position: relative;
-      z-index: 2;
-    }
-
-    .intro {
-      position: relative;
-      padding: 58px 54px;
-      color: #ffffff;
-      background:
-        linear-gradient(150deg, rgba(5, 45, 88, 0.96), rgba(20, 105, 175, 0.92)),
-        radial-gradient(circle at top right, rgba(0, 225, 255, 0.35), transparent 40%);
-      overflow: hidden;
-    }
-
-    .intro::before {
-      content: "";
-      position: absolute;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      right: -120px;
-      top: -90px;
-      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 65%);
-    }
-
-    .intro::after {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      left: -100px;
-      bottom: -100px;
-      border: 1px solid rgba(255,255,255,0.18);
-    }
-
-    .intro-content {
+    .enter-wrap {
       position: relative;
       z-index: 1;
-    }
-
-    .lab-chip {
-      width: 92px;
-      height: 92px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.08));
-      border: 1px solid rgba(255,255,255,0.35);
-      margin-bottom: 30px;
-      display: grid;
-      place-items: center;
-      position: relative;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
-    }
-
-    .lab-chip::before {
-      content: "";
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      border: 2px solid rgba(255,255,255,0.85);
-      box-shadow: inset 0 0 18px rgba(120,220,255,0.45);
-    }
-
-    .lab-chip::after {
-      content: "";
-      position: absolute;
-      inset: -12px;
-      border: 1px dashed rgba(255,255,255,0.28);
-      border-radius: 30px;
-    }
-
-    .intro h1 {
-      font-size: 34px;
-      line-height: 1.35;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
-
-    .intro .subtitle {
-      font-size: 16px;
-      line-height: 1.9;
-      color: rgba(255,255,255,0.88);
-      max-width: 470px;
-    }
-
-    .tag-list {
-      margin-top: 36px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .tag {
-      padding: 13px 15px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.13);
-      border: 1px solid rgba(255,255,255,0.18);
-      backdrop-filter: blur(8px);
-      font-size: 14px;
-      color: rgba(255,255,255,0.92);
-    }
-
-    .panel {
-      padding: 44px 40px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(246,251,255,0.94));
-    }
-
-    .system-name {
-      margin-bottom: 26px;
-    }
-
-    .system-name h2 {
-      font-size: 25px;
-      color: #103c63;
-      margin-bottom: 8px;
-    }
-
-    .system-name p {
-      font-size: 14px;
-      color: #6f8295;
-      line-height: 1.6;
-    }
-
-    .tabs {
+      width: 100%;
+      height: 100vh;
       display: flex;
-      background: #edf6ff;
-      padding: 5px;
-      border-radius: 15px;
-      margin-bottom: 28px;
-      border: 1px solid #d8eaff;
+      align-items: center;
+      justify-content: center;
     }
 
-    .tab-btn {
-      flex: 1;
-      border: none;
-      padding: 12px;
-      background: transparent;
-      color: #49657d;
+.enter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  height: 62px;
+  padding: 0 42px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #ffffff;
+
+  /* 更透明的玻璃按钮 */
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+
+  box-shadow:
+    0 18px 42px rgba(0, 35, 80, 0.28),
+    inset 0 0 22px rgba(255, 255, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+  transition: all 0.25s ease;
+}
+
+.enter-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 24px 55px rgba(0, 60, 120, 0.34),
+    0 0 26px rgba(120, 210, 255, 0.48),
+    inset 0 0 26px rgba(255, 255, 255, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+    .enter-btn:active {
+      transform: translateY(-1px) scale(0.99);
+    }
+
+
+    .main-title {
+      position: absolute;
+      z-index: 1;
+      top: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      text-align: center;
+      font-size: clamp(42px, 7vw, 88px);
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: rgba(255, 255, 255, 0.96);
+      text-shadow:
+        0 6px 24px rgba(0, 20, 50, 0.45),
+        0 0 22px rgba(110, 210, 255, 0.34);
+      user-select: none;
+    }
+
+    .admin-info {
+      position: absolute;
+      z-index: 1;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 15px;
-      border-radius: 11px;
-      cursor: pointer;
-      transition: 0.25s;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.78);
+      text-shadow: 0 3px 12px rgba(0, 20, 45, 0.45);
+      user-select: none;
     }
 
-    .tab-btn.active {
-      background: linear-gradient(135deg, #1976bd, #0f4c81);
-      color: white;
-      box-shadow: 0 8px 20px rgba(27,117,188,0.25);
-    }
-
-    .form {
-      display: none;
-    }
-
-    .form.active {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 17px;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      color: #2f485e;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 13px;
-      border: 1px solid #cbdced;
-      background: rgba(255,255,255,0.9);
-      font-size: 15px;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    input:focus {
-      border-color: #1b75bc;
-      box-shadow: 0 0 0 4px rgba(27,117,188,0.13);
-    }
-
-    .submit-btn {
-      width: 100%;
-      margin-top: 8px;
-      padding: 14px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #1b75bc, #0d4472);
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.22s;
-      box-shadow: 0 10px 24px rgba(27,117,188,0.22);
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 28px rgba(27,117,188,0.3);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .message {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      display: none;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .message.success {
-      display: block;
-      background: #e8f8ee;
-      color: #207944;
-      border: 1px solid #bfe8ce;
-    }
-
-    .message.error {
-      display: block;
-      background: #fff0f0;
-      color: #b83227;
-      border: 1px solid #ffd0d0;
-    }
-
-    .note {
-      margin-top: 18px;
-      padding: 13px 14px;
-      border-radius: 12px;
-      background: #f2f7fc;
-      border-left: 4px solid #1b75bc;
-      color: #6d7f91;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    @media (max-width: 860px) {
-      body {
-        overflow: auto;
-        padding: 30px 0;
+    @media (max-width: 600px) {
+      .main-title {
+        top: 9%;
+        font-size: 40px;
+        letter-spacing: 3px;
       }
 
-      .container {
-        grid-template-columns: 1fr;
+      .admin-info {
+        bottom: 18px;
+        font-size: 13px;
       }
 
-      .intro {
-        padding: 40px 32px;
-      }
-
-      .intro h1 {
-        font-size: 28px;
-      }
-
-      .panel {
-        padding: 36px 30px;
+      .enter-btn {
+        min-width: 180px;
+        height: 56px;
+        font-size: 19px;
+        padding: 0 34px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="circuit">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
+  <h1 class="main-title">B504仓库在线</h1>
+
+  <div class="enter-wrap">
+    <a class="enter-btn" href="inventory.html">进入系统</a>
   </div>
 
-  <div class="floating-dot dot1"></div>
-  <div class="floating-dot dot2"></div>
-  <div class="floating-dot dot3"></div>
-  <div class="floating-dot dot4"></div>
-
-  <main class="container">
-    <section class="intro">
-      <div class="intro-content">
-        <div class="lab-chip"></div>
-
-        <h1>课题组公共耗材<br />智能管理系统</h1>
-
-        <p class="subtitle">
-          面向实验室日常运行的公共耗材余量看板，
-          支持学号注册登录、耗材库存查看、补货状态追踪与低库存提醒。
-        </p>
-
-        <div class="tag-list">
-          <div class="tag">实验室耗材</div>
-          <div class="tag">库存可视化</div>
-          <div class="tag">补货状态</div>
-          <div class="tag">学号登录</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="system-name">
-        <h2>账户登录 / 注册</h2>
-        <p>请使用课题组内部学号或工号登录。学号可包含字母与数字。</p>
-      </div>
-
-      <div class="tabs">
-        <button class="tab-btn active" data-target="loginForm">登录</button>
-        <button class="tab-btn" data-target="registerForm">注册</button>
-      </div>
-
-      <form id="loginForm" class="form active">
-        <div class="form-group">
-          <label for="loginStudentId">学号 / 工号</label>
-          <input id="loginStudentId" type="text" placeholder="例如 M202570420 或 HUST001" autocomplete="username" />
-        </div>
-
-        <div class="form-group">
-          <label for="loginPassword">密码</label>
-          <input id="loginPassword" type="password" placeholder="请输入密码" autocomplete="current-password" />
-        </div>
-
-        <button id="loginBtn" class="submit-btn" type="submit">登录耗材系统</button>
-      </form>
-
-      <form id="registerForm" class="form">
-        <div class="form-group">
-          <label for="registerName">姓名</label>
-          <input id="registerName" type="text" placeholder="请输入姓名" />
-        </div>
-
-        <div class="form-group">
-          <label for="registerStudentId">学号 / 工号</label>
-          <input id="registerStudentId" type="text" placeholder="学号可包含字母、数字，不限制长度" autocomplete="username" />
-        </div>
-
-        <div class="form-group">
-          <label for="registerPassword">密码</label>
-          <input id="registerPassword" type="password" placeholder="请设置密码，至少 6 位" autocomplete="new-password" />
-        </div>
-
-        <div class="form-group">
-          <label for="registerPassword2">确认密码</label>
-          <input id="registerPassword2" type="password" placeholder="请再次输入密码" autocomplete="new-password" />
-        </div>
-
-        <button id="registerBtn" class="submit-btn" type="submit">注册账号</button>
-      </form>
-
-      <div id="message" class="message"></div>
-
-      <div class="note">
-        当前版本适合部署到 GitHub Pages。账号密码由 Firebase Authentication 保存，
-        姓名和学号由 Firestore 保存，不再依赖本地 code.txt。
-      </div>
-    </section>
-  </main>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-
-  <script>
-    /*
-      一、你需要在 Firebase 控制台新建项目
-      二、启用 Authentication -> Sign-in method -> Email/Password
-      三、启用 Firestore Database
-      四、把下面 firebaseConfig 换成你自己的配置
-    */
-
-    const firebaseConfig = {
-      apiKey: "替换为你的 apiKey",
-      authDomain: "替换为你的 authDomain",
-      projectId: "替换为你的 projectId",
-      storageBucket: "替换为你的 storageBucket",
-      messagingSenderId: "替换为你的 messagingSenderId",
-      appId: "替换为你的 appId"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    const SESSION_KEY = "lab_consumable_current_user";
-
-    const $ = (id) => document.getElementById(id);
-
-    function showMessage(text, type = "success") {
-      const box = $("message");
-      box.textContent = text;
-      box.className = "message " + type;
-    }
-
-    function clearMessage() {
-      $("message").textContent = "";
-      $("message").className = "message";
-    }
-
-    function setLoading(buttonId, loadingText, isLoading) {
-      const btn = $(buttonId);
-
-      if (!btn.dataset.originalText) {
-        btn.dataset.originalText = btn.textContent;
-      }
-
-      btn.disabled = isLoading;
-      btn.textContent = isLoading ? loadingText : btn.dataset.originalText;
-    }
-
-    function isValidStudentId(studentId) {
-      return studentId.trim().length > 0;
-    }
-
-    /*
-      Firebase Authentication 默认用 email 登录。
-      这里把学号转换成一个内部邮箱格式，不需要真实邮箱。
-      例如：M202570420 -> m202570420@lab.local
-    */
-    function studentIdToEmail(studentId) {
-      const cleanId = studentId.trim().toLowerCase();
-
-      /*
-        Firebase 邮箱用户名部分不能包含某些特殊字符。
-        这里把非字母数字的字符替换为下划线。
-        普通学号如 M202570420、D2025ABC001 都不会受影响。
-      */
-      const safeId = cleanId.replace(/[^a-z0-9]/g, "_");
-
-      return `${safeId}@lab.local`;
-    }
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".form").forEach(f => f.classList.remove("active"));
-
-        btn.classList.add("active");
-        $(btn.dataset.target).classList.add("active");
-
-        clearMessage();
-      });
-    });
-
-    $("registerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      clearMessage();
-
-      const name = $("registerName").value.trim();
-      const studentId = $("registerStudentId").value.trim();
-      const password = $("registerPassword").value;
-      const password2 = $("registerPassword2").value;
-
-      if (!name) {
-        showMessage("请填写姓名。", "error");
-        return;
-      }
-
-      if (!isValidStudentId(studentId)) {
-        showMessage("请填写学号或工号。", "error");
-        return;
-      }
-
-      if (password.length < 6) {
-        showMessage("密码至少需要 6 位。", "error");
-        return;
-      }
-
-      if (password !== password2) {
-        showMessage("两次输入的密码不一致。", "error");
-        return;
-      }
-
-      const email = studentIdToEmail(studentId);
-
-      try {
-        setLoading("registerBtn", "正在注册...", true);
-
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const uid = userCredential.user.uid;
-
-        await db.collection("users").doc(uid).set({
-          name: name,
-          studentId: studentId,
-          emailForLogin: email,
-          role: "member",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          lastLoginAt: null
-        });
-
-        await auth.signOut();
-
-        showMessage("注册成功，请切换到登录页面登录。", "success");
-
-        $("registerName").value = "";
-        $("registerStudentId").value = "";
-        $("registerPassword").value = "";
-        $("registerPassword2").value = "";
-
-      } catch (error) {
-        let msg = "注册失败，请稍后重试。";
-
-        if (error.code === "auth/email-already-in-use") {
-          msg = "该学号已经注册，请直接登录。";
-        } else if (error.code === "auth/weak-password") {
-          msg = "密码强度太弱，请至少设置 6 位密码。";
-        } else if (error.code === "auth/network-request-failed") {
-          msg = "网络连接失败，请检查网络。";
-        }
-
-        showMessage(msg, "error");
-
-      } finally {
-        setLoading("registerBtn", "正在注册...", false);
-      }
-    });
-
-    $("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      clearMessage();
-
-      const studentId = $("loginStudentId").value.trim();
-      const password = $("loginPassword").value;
-
-      if (!isValidStudentId(studentId)) {
-        showMessage("请输入学号或工号。", "error");
-        return;
-      }
-
-      if (!password) {
-        showMessage("请输入密码。", "error");
-        return;
-      }
-
-      const email = studentIdToEmail(studentId);
-
-      try {
-        setLoading("loginBtn", "正在登录...", true);
-
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const uid = userCredential.user.uid;
-
-        const doc = await db.collection("users").doc(uid).get();
-
-        if (!doc.exists) {
-          showMessage("账号信息不完整，请联系管理员。", "error");
-          await auth.signOut();
-          return;
-        }
-
-        const userData = doc.data();
-
-        await db.collection("users").doc(uid).update({
-          lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        localStorage.setItem(SESSION_KEY, JSON.stringify({
-          uid: uid,
-          name: userData.name,
-          studentId: userData.studentId,
-          role: userData.role || "member",
-          loginAt: new Date().toISOString()
-        }));
-
-        window.location.href = "inventory.html";
-
-      } catch (error) {
-        let msg = "登录失败，请检查学号和密码。";
-
-        if (
-          error.code === "auth/invalid-login-credentials" ||
-          error.code === "auth/user-not-found" ||
-          error.code === "auth/wrong-password"
-        ) {
-          msg = "学号或密码错误。";
-        } else if (error.code === "auth/network-request-failed") {
-          msg = "网络连接失败，请检查网络。";
-        }
-
-        showMessage(msg, "error");
-
-      } finally {
-        setLoading("loginBtn", "正在登录...", false);
-      }
-    });
-  </script>
+  <div class="admin-info">管理员QQ：1744996809</div>
 </body>
 </html>
